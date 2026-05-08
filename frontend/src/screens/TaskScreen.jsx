@@ -18,8 +18,6 @@ const TaskScreen = () => {
 
       if (res.ok) {
         setTasks(data);
-      } else {
-        console.log(data.message);
       }
     } catch (error) {
       console.log(error);
@@ -37,16 +35,53 @@ const TaskScreen = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ title }),
+        body: JSON.stringify({
+          title,
+          completed: false,
+        }),
       });
-
-      const data = await res.json();
 
       if (res.ok) {
         setTitle("");
         fetchTasks();
-      } else {
-        console.log(data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // DELETE TASK
+  const deleteTask = async (id) => {
+    try {
+      const res = await fetch(`${API_URL}/api/tasks/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      if (res.ok) {
+        fetchTasks();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // TOGGLE COMPLETE
+  const toggleComplete = async (task) => {
+    try {
+      const res = await fetch(`${API_URL}/api/tasks/${task._id}`, {
+        method: "PUT",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          completed: !task.completed,
+        }),
+      });
+
+      if (res.ok) {
+        fetchTasks();
       }
     } catch (error) {
       console.log(error);
@@ -80,8 +115,47 @@ const TaskScreen = () => {
           <h3>No Tasks Found</h3>
         ) : (
           tasks.map((task) => (
-            <div key={task._id} className="card p-3 mb-2">
-              {task.title}
+            <div
+              key={task._id}
+              className="card p-3 mb-3 d-flex flex-row justify-content-between align-items-center"
+            >
+              <div>
+                <h5
+                  style={{
+                    textDecoration: task.completed
+                      ? "line-through"
+                      : "none",
+                  }}
+                >
+                  {task.title}
+                </h5>
+
+                <small>
+                  Status: {task.completed ? "Completed ✅" : "Pending ⏳"}
+                </small>
+              </div>
+
+              <div className="d-flex gap-2">
+                <button
+                  className={`btn ${
+                    task.completed
+                      ? "btn-warning"
+                      : "btn-success"
+                  }`}
+                  onClick={() => toggleComplete(task)}
+                >
+                  {task.completed
+                    ? "Undo"
+                    : "Complete"}
+                </button>
+
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteTask(task._id)}
+                >
+                  Delete
+                </button>
+              </div>
             </div>
           ))
         )}
