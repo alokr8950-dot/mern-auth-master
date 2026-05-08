@@ -24,7 +24,7 @@ const app = express();
 // CORS
 app.use(
   cors({
-    origin: 'https://mern-auth-master-fhkcqod94-alokr8950-dots-projects.vercel.app',
+    origin: 'https://mern-auth-master-39tb7zsm7-alokr8950-dots-projects.vercel.app',
     credentials: true,
   })
 );
