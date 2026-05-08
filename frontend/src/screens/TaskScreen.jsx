@@ -6,19 +6,12 @@ const TaskScreen = () => {
   const [title, setTitle] = useState("");
   const [tasks, setTasks] = useState([]);
 
-  // localStorage se token nikalo
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const token = userInfo?.token;
-
   // FETCH TASKS
   const fetchTasks = async () => {
     try {
       const res = await fetch(`${API_URL}/api/tasks`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        credentials: "include",
       });
 
       const data = await res.json();
@@ -40,9 +33,9 @@ const TaskScreen = () => {
     try {
       const res = await fetch(`${API_URL}/api/tasks`, {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ title }),
       });
@@ -61,10 +54,8 @@ const TaskScreen = () => {
   };
 
   useEffect(() => {
-    if (token) {
-      fetchTasks();
-    }
-  }, [token]);
+    fetchTasks();
+  }, []);
 
   return (
     <div className="container mt-5">
