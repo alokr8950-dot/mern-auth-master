@@ -16,7 +16,7 @@ const TaskScreen = () => {
 
       const data = await res.json();
 
-      setTasks(data);
+      setTasks(Array.isArray(data) ? data : []);
 
     } catch (error) {
       console.log(error);
@@ -107,6 +107,7 @@ const TaskScreen = () => {
         Task Dashboard
       </h1>
 
+      {/* ADD TASK */}
       <form onSubmit={submitHandler}>
 
         <input
@@ -125,6 +126,8 @@ const TaskScreen = () => {
 
       </form>
 
+
+      {/* TASK LIST */}
       <div className="mt-5">
 
         {tasks.length === 0 ? (
@@ -156,6 +159,7 @@ const TaskScreen = () => {
                     : "⏳ Pending"}
                 </p>
               </div>
+
 
               <div className="d-flex gap-2">
 
