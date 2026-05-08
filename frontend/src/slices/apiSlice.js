@@ -1,7 +1,7 @@
 import { fetchBaseQuery, createApi } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://mern-auth-master.onrender.com',
+  baseUrl: import.meta.env.VITE_API_URL,
   credentials: 'include',
 });
 
