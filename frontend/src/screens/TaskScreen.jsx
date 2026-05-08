@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+const API_URL = "https://mern-auth-master.onrender.com";
+
 const TaskScreen = () => {
   const [title, setTitle] = useState("");
   const [tasks, setTasks] = useState([]);
@@ -8,7 +10,7 @@ const TaskScreen = () => {
   // FETCH TASKS
   const fetchTasks = async () => {
     try {
-      const res = await fetch("/api/tasks", {
+      const res = await fetch(`${API_URL}/api/tasks`, {
         credentials: "include",
       });
 
@@ -27,7 +29,7 @@ const TaskScreen = () => {
     e.preventDefault();
 
     try {
-      await fetch("/api/tasks", {
+      await fetch(`${API_URL}/api/tasks`, {
         method: "POST",
 
         headers: {
@@ -54,7 +56,7 @@ const TaskScreen = () => {
   // DELETE TASK
   const deleteHandler = async (id) => {
     try {
-      await fetch(`/api/tasks/${id}`, {
+      await fetch(`${API_URL}/api/tasks/${id}`, {
         method: "DELETE",
 
         credentials: "include",
@@ -71,7 +73,7 @@ const TaskScreen = () => {
   // COMPLETE TASK
   const completeHandler = async (task) => {
     try {
-      await fetch(`/api/tasks/${task._id}`, {
+      await fetch(`${API_URL}/api/tasks/${task._id}`, {
         method: "PUT",
 
         headers: {
@@ -105,8 +107,6 @@ const TaskScreen = () => {
         Task Dashboard
       </h1>
 
-
-      {/* ADD TASK */}
       <form onSubmit={submitHandler}>
 
         <input
@@ -125,8 +125,6 @@ const TaskScreen = () => {
 
       </form>
 
-
-      {/* TASK LIST */}
       <div className="mt-5">
 
         {tasks.length === 0 ? (
@@ -158,7 +156,6 @@ const TaskScreen = () => {
                     : "⏳ Pending"}
                 </p>
               </div>
-
 
               <div className="d-flex gap-2">
 
