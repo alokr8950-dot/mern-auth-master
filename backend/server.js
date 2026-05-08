@@ -24,7 +24,7 @@ const app = express();
 // CORS
 app.use(
   cors({
-    origin: 'https://mern-auth-master-39tb7zsm7-alokr8950-dots-projects.vercel.app',
+    origin: true,
     credentials: true,
   })
 );
@@ -48,11 +48,11 @@ app.use('/api/tasks', taskRoutes);
 if (process.env.NODE_ENV === 'production') {
   const __dirname = path.resolve();
 
-  app.use(express.static(path.join(__dirname, '/frontend/dist')));
+  app.use(express.static(path.join(__dirname, '../frontend/dist')));
 
   app.get('*', (req, res) =>
     res.sendFile(
-      path.resolve(__dirname, 'frontend', 'dist', 'index.html')
+      path.resolve(__dirname, '../frontend', 'dist', 'index.html')
     )
   );
 } else {
