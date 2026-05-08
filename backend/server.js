@@ -1,5 +1,7 @@
+import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -19,6 +21,15 @@ connectDB();
 const app = express();
 
 
+// CORS
+app.use(
+  cors({
+    origin: 'https://mern-auth-master-fhkcqod94-alokr8950-dots-projects.vercel.app',
+    credentials: true,
+  })
+);
+
+
 // Body Parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,10 +44,22 @@ app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);
 
 
-// Home Route
-app.get('/', (req, res) => {
-  res.send('API is running....');
-});
+// Production
+if (process.env.NODE_ENV === 'production') {
+  const __dirname = path.resolve();
+
+  app.use(express.static(path.join(__dirname, '/frontend/dist')));
+
+  app.get('*', (req, res) =>
+    res.sendFile(
+      path.resolve(__dirname, 'frontend', 'dist', 'index.html')
+    )
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.send('API is running....');
+  });
+}
 
 
 // Error Middleware
